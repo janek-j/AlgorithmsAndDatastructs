@@ -5,7 +5,7 @@
 using namespace std;
 
 typedef int elementtype, position ;
-const int maxlength = 10;
+const int maxlength = 4;
 struct List {
     elementtype elements[maxlength];
     int last;           //indeks ostatniego elementu listy
@@ -82,16 +82,19 @@ void print(List l)
 
 void initiateTask1() {
     List l;
-    l.last=-1;
+    l.last = -1;
     Insert(100,First(l),l);
     print(l);
 
-    for (int i=0; i<3;i++)
-        Insert(i, First(l),l);
+    for(int i = 0; i < 3; i++) {
+        Insert(i, First(l), l);
+    }
     print(l);
 
     Insert(20, Previous(END(l), l) ,l);
+    Insert(15, Next(Locate(100, l),l), l);
     print(l);
+
     Delete(Locate(20,l), l);
     print(l);
 }
