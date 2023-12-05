@@ -1,14 +1,15 @@
 #include <iostream>
 
 //Jan Jochymczyk
+//dopisane funkcje purge oraz duplicate.
 
 using namespace std;
 
 typedef int elementtype, position ;
-const int maxlength = 4;
+const int maxlength = 40;
 struct List {
     elementtype elements[maxlength];
-    int last;           //indeks ostatniego elementu listy
+    int last; //indeks ostatniego elementu listy
 };
 
 position END(List l) {
@@ -22,7 +23,6 @@ position First(List l) {
 position Next(position p,List l) {
     return p + 1;
 }
-
 
 position Previous(position p,List l) {
     return p - 1;
@@ -46,7 +46,6 @@ bool Insert(int x, position p, List &l) {
     if (p < 0 || p > l.last + 1 || l.last == maxlength - 1) {
         return false; // warunek poprawnosci pozycji.
     }
-
     for (int i = l.last; i >= p; --i) {
         l.elements[i + 1] = l.elements[i];
     }
@@ -63,7 +62,6 @@ bool Delete(position p, List &l) {
     for (int i = p; i < l.last; ++i) {
         l.elements[i] = l.elements[i + 1];
     }
-
     --l.last;
     return true;
 }
@@ -80,23 +78,51 @@ void print(List l)
 
 }
 
+void Duplicate(List &l) {
+    position i = First(l);
+
+    while (i != END(l)) {
+        elementtype elementToDuplicate = Retrieve(i, l);
+        Insert(elementToDuplicate, Next(i, l), l); // wstawia duplikat za podanym elementem.
+        i = Next(Next(i, l), l); // Przesuń pozycje na nastepna pozycje.
+    }
+}
+
+void Purge(List &l) { //usuwamy duplikaty.
+    position i = First(l);
+    while (i != END(l)) {
+        position j = Next(i, l);
+        while (j != END(l)) {
+            if (Retrieve(i, l) == Retrieve(j, l)) {
+                Delete(j, l); // usuwa powtorzenie
+            } else {
+                j = Next(j, l); //przechodzi do nastepnego elementu
+            }
+        }
+        i = Next(i, l); // przechodzi do nastepnego elementu
+    }
+}
+
 void initiateTask1() {
     List l;
     l.last = -1;
-    Insert(100,First(l),l);
+    Insert(100, First(l), l);
     print(l);
 
-    for(int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         Insert(i, First(l), l);
     }
     print(l);
 
-    Insert(20, Previous(END(l), l) ,l);
-    Insert(15, Next(Locate(100, l),l), l);
+    Insert(20, Previous(END(l), l), l);
+    Insert(15, Next(Locate(100, l), l), l);
     print(l);
 
-    Delete(Locate(20,l), l);
-    print(l);
+    Duplicate(l); //testy podane w zadaniu.
+    print(l); //sprawdzam czy dziala - dziala.
+
+    Purge(l); //testy podane w zadania
+    print(l); //sprawdzczam czy dziala - dziala.
 }
 
 int main(int args, char* argv[]) {

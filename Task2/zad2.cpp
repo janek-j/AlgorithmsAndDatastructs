@@ -1,6 +1,6 @@
 #include <iostream>
 
-// linked list implementation.
+// implementacja listy wskaznikowej.
 
 typedef int  elementtype;
 
@@ -9,7 +9,7 @@ struct celltype {
     celltype * next;
 };
 
-typedef celltype  * position;
+typedef celltype  *position;
 
 class Lista
 {
@@ -18,6 +18,7 @@ protected :
 public:
     Lista();    //konstruktor
     ~Lista();  //destruktor
+
     void Insert(elementtype x, position p);
     void Delete(position p);
     elementtype Retrieve(position p);
@@ -110,7 +111,7 @@ elementtype Lista::Retrieve(position p) {
     if (p != nullptr && p->next != nullptr) {
         return p->next->element;
     } else {
-        return -1; // For example, -1 could indicate an error
+        return -1; //gdy nie ma, to zwroci -1
     }
 }
 
